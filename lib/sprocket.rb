@@ -9,8 +9,14 @@ class Sprocket
   end
 
   def source_files= sources_hash
+    ext = "js"
     @source_files ||= SprocketsApplication.decode(sources_hash).map do |f|
-      File.expand_path File.join(Sprocket.scripts_root, f)
+      source = File.expand_path File.join(Sprocket.scripts_root, f)
+      source_ext = File.extname(source)[1..-1]
+      if ext && (source_ext.blank? || (ext != source_ext && File.exist?("#{source}.#{ext}")))
+        source += ".#{ext}"
+      end
+      source
     end.select { |f| f.starts_with? Sprocket.scripts_root }
   end
 
