@@ -9,7 +9,7 @@ module SprocketsHelper
 
   def sprockets_scripts *scripts
     @scripts ||= []
-    @scripts << scripts
+    @scripts += scripts
     @content_for_sprockets_scripts = SprocketsApplication.encode(@scripts.sort)
     nil
   end
