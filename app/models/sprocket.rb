@@ -2,6 +2,16 @@ class Sprocket
   mattr_reader :scripts_root
   @@scripts_root = File.join(Rails.root, "app", "javascripts")
   attr_reader :source_files
+  
+  class << self
+    def encode source_files
+      ERB::Util.h(Base64.encode64(source_files.to_json).gsub("\n",''))
+    end
+
+    def decode hash
+      ActiveSupport::JSON.decode URI.unescape(Base64.decode64(hash))
+    end
+  end
 
   def initialize sources_hash
     @sources_hash = sources_hash
@@ -10,7 +20,7 @@ class Sprocket
 
   def source_files= sources_hash
     ext = "js"
-    @source_files ||= SprocketsApplication.decode(sources_hash).map do |f|
+    @source_files ||= Sprocket.decode(sources_hash).map do |f|
       source = File.expand_path File.join(Sprocket.scripts_root, f)
       source_ext = File.extname(source)[1..-1]
       if ext && (source_ext.blank? || (ext != source_ext && File.exist?("#{source}.#{ext}")))

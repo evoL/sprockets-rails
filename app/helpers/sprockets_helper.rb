@@ -4,13 +4,13 @@ module SprocketsHelper
   end
 
   def sprockets_path
-    javascript_path "/sprockets/#{ render(:inline => "<%=  yield :sprockets_scripts %>") }" if @content_for_sprockets_scripts 
+    javascript_path "/sprockets/#{ content_for :sprockets_scripts  }" if content_for(:sprockets_scripts) 
   end
 
   def sprockets_scripts *scripts
     @scripts ||= []
     @scripts += scripts
-    @content_for_sprockets_scripts = SprocketsApplication.encode(@scripts.sort)
+    content_for :sprockets_scripts, Sprocket.encode(@scripts.sort)
     nil
   end
 end

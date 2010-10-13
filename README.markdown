@@ -17,19 +17,11 @@ Here's a walkthrough of the installation process:
 
     You now have `app/javascripts/` and `vendor/sprockets/` directories in your application, as well as a `config/sprockets.yml` file.
 
-3. Edit your `config/routes.rb` file to add routes for `SprocketsController`:
+3. Move your JavaScript source files from `public/javascripts/` into `app/javascripts/`. All files in all subdirectories of `app/javascripts/` will be required by Sprockets in alphabetical order, with the exception of `app/javascripts/application.js`, which is required _before any other file_. (You can change this behavior by editing the `source_files` line of `config/sprockets.yml`.)
 
-        ActionController::Routing::Routes.draw do |map|
-          # Add the following line:
-          SprocketsApplication.routes(map) 
-          ...
-        end
+4. Adjust your HTML templates to call `<%= sprockets_scripts ... %>` instead of `<%= javascript_include_tag ... %>`.
 
-4. Move your JavaScript source files from `public/javascripts/` into `app/javascripts/`. All files in all subdirectories of `app/javascripts/` will be required by Sprockets in alphabetical order, with the exception of `app/javascripts/application.js`, which is required _before any other file_. (You can change this behavior by editing the `source_files` line of `config/sprockets.yml`.)
-
-5. Adjust your HTML templates to call `<%= sprockets_scripts ... %>` instead of `<%= javascript_include_tag ... %>`.
-
-6. Call `<%= sprockets_include_tag %>` somewhere in your template - this will generate javascript tag with hash for aggregated javascript files.
+5. Call `<%= sprockets_include_tag %>` somewhere in your template - this will generate javascript tag with hash for aggregated javascript files.
 
 Once `sprockets-rails` is installed, you can check out Sprockets plugins into the `vendor/sprockets/` directory. By default, `sprockets-rails` configures Sprockets' load path to search `vendor/sprockets/*/src/`, as well as `vendor/plugins/*/javascripts/`. This means that the `javascripts/` directories of Rails plugins are automatically installed into your Sprockets load path.
 
