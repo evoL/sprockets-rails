@@ -50,7 +50,7 @@ class Sprocket
   end
 
   def self.configuration
-    YAML.load(IO.read(File.join(RAILS_ROOT, "config", "sprockets.yml"))) || {}
+    YAML.load(IO.read(File.join(Rails.root, "config", "sprockets.yml"))) || {}
   end
 
   def concatenation
