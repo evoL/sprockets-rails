@@ -11,17 +11,21 @@ To source Sprockets' JavaScript concatenation from your HTML templates, use the 
 
 Here's a walkthrough of the installation process:
 
-1. `gem install --remote sprockets`
+1. Add the `sprockets` gem to your Gemfile
 
-2. `script/plugin install git://github.com/oruen/sprockets-rails.git`
+2. Clone into `git://github.com/evoL/sprockets-rails.git`
+
+3. Run the supplied install.rb file
 
     You now have `app/javascripts/` and `vendor/sprockets/` directories in your application, as well as a `config/sprockets.yml` file.
 
-3. Move your JavaScript source files from `public/javascripts/` into `app/javascripts/`. All files in all subdirectories of `app/javascripts/` will be required by Sprockets in alphabetical order, with the exception of `app/javascripts/application.js`, which is required _before any other file_. (You can change this behavior by editing the `source_files` line of `config/sprockets.yml`.)
+4. Move your JavaScript source files from `public/javascripts/` into `app/javascripts/`. All files in all subdirectories of `app/javascripts/` will be required by Sprockets in alphabetical order, with the exception of `app/javascripts/application.js`, which is required _before any other file_. (You can change this behavior by editing the `source_files` line of `config/sprockets.yml`.)
 
-4. Adjust your HTML templates to call `<%= sprockets_scripts ... %>` instead of `<%= javascript_include_tag ... %>`.
+5. Adjust your HTML templates to call `<%= sprockets_scripts ... %>` instead of `<%= javascript_include_tag ... %>`.
 
-5. Call `<%= sprockets_include_tag %>` somewhere in your template - this will generate javascript tag with hash for aggregated javascript files.
+6. To concatenate all javascripts from a folder inside `app/javascripts`, use `<%= sprockets_folder 'folder_name' %>`
+
+7. Call `<%= sprockets_include_tag %>` somewhere in your template - this will generate javascript tag with hash for aggregated javascript files.
 
 Once `sprockets-rails` is installed, you can check out Sprockets plugins into the `vendor/sprockets/` directory. By default, `sprockets-rails` configures Sprockets' load path to search `vendor/sprockets/*/src/`, as well as `vendor/plugins/*/javascripts/`. This means that the `javascripts/` directories of Rails plugins are automatically installed into your Sprockets load path.
 
@@ -29,7 +33,7 @@ Once `sprockets-rails` is installed, you can check out Sprockets plugins into th
 
 Copyright &copy; 2009 Sam Stephenson.
 
-Copyright &copy; 2010 Nick Recobra.
+Copyright &copy; 2010 Nick Recobra, Rafał Hirsz.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
