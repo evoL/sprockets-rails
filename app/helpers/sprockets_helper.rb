@@ -1,10 +1,10 @@
 module SprocketsHelper
   def sprockets_include_tag
-    javascript_include_tag("/sprockets/#{ Sprocket.encode(@scripts) }") unless @scripts.empty?
+    javascript_include_tag("/sprockets/#{ Sprocket.encode(@scripts) }.js?#{ Sprocket.lastmtime(@scripts) }") unless @scripts.empty?
   end
 
   def sprockets_path
-    javascript_path "/sprockets/#{ Sprocket.encode(@scripts) }" unless @scripts.empty?
+    javascript_path "/sprockets/#{ Sprocket.encode(@scripts) }.js?#{ Sprocket.lastmtime(@scripts) }" unless @scripts.empty?
   end
 
   def sprockets_folder folder

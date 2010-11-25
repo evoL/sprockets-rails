@@ -11,6 +11,18 @@ class Sprocket
     def decode hash
       ActiveSupport::JSON.decode URI.unescape(Base64.decode64(hash))
     end
+    
+    def lastmtime source_files
+      ext = 'js'
+      source_files.map do |f|
+        source = File.expand_path File.join(Sprocket.scripts_root, f)
+        source_ext = File.extname(source)[1..-1]
+        if ext && (source_ext.blank? || (ext != source_ext && File.exist?("#{source}.#{ext}")))
+          source += ".#{ext}"
+        end
+        File.mtime(source).to_i
+      end.max
+    end
   end
 
   def initialize sources_hash
