@@ -3,44 +3,36 @@ class Sprocket
   @@scripts_root = File.join(Rails.root, "app", "javascripts")
   attr_reader :source_files
   
-  class << self
-    def encode source_files
-      ERB::Util.h(Base64.encode64(source_files.to_json).gsub("\n",''))
-    end
+  # class << self
+  #   def encode source_files
+  #     ERB::Util.h(Base64.encode64(source_files.to_json).gsub("\n",''))
+  #   end
+  # 
+  #   def decode hash
+  #     ActiveSupport::JSON.decode URI.unescape(Base64.decode64(hash))
+  #   end
+  # end
 
-    def decode hash
-      ActiveSupport::JSON.decode URI.unescape(Base64.decode64(hash))
-    end
-    
-    def lastmtime source_files
-      ext = 'js'
-      source_files.map do |f|
-        source = File.expand_path File.join(Sprocket.scripts_root, f)
-        source_ext = File.extname(source)[1..-1]
-        if ext && (source_ext.blank? || (ext != source_ext && File.exist?("#{source}.#{ext}")))
-          source += ".#{ext}"
-        end
-        File.mtime(source).to_i
-      end.max
-    end
-  end
+  # def initialize sources_hash
+  #   @sources_hash = sources_hash ? sources_hash : ''
+  #   self.source_files = sources_hash
+  # end
 
-  def initialize sources_hash
-    @sources_hash = sources_hash
-    self.source_files = sources_hash
-  end
-
-  def source_files= sources_hash
-    ext = "js"
-    @source_files ||= Sprocket.decode(sources_hash).map do |f|
-      source = File.expand_path File.join(Sprocket.scripts_root, f)
-      source_ext = File.extname(source)[1..-1]
-      if ext && (source_ext.blank? || (ext != source_ext && File.exist?("#{source}.#{ext}")))
-        source += ".#{ext}"
-      end
-      source
-    end.select { |f| f.starts_with? Sprocket.scripts_root }
-  end
+  # def source_files= sources_hash
+  #   ext = "js"
+  #   if sources_hash
+  #     @source_files ||= Sprocket.decode(sources_hash).map do |f|
+  #       source = File.expand_path File.join(Sprocket.scripts_root, f)
+  #       source_ext = File.extname(source)[1..-1]
+  #       if ext && (source_ext.blank? || (ext != source_ext && File.exist?("#{source}.#{ext}")))
+  #         source += ".#{ext}"
+  #       end
+  #       source
+  #     end.select { |f| f.starts_with? Sprocket.scripts_root }
+  #   else
+  #     {}
+  #   end
+  # end
 
   def source
     concatenation.to_s
@@ -58,7 +50,9 @@ class Sprocket
 
   protected
   def secretary
-    @secretary ||= Sprockets::Secretary.new(self.class.configuration.merge(:root => Rails.root, :source_files => source_files))
+    # files = self.class.configuration[:source_files] | source_files
+    # @secretary ||= Sprockets::Secretary.new(self.class.configuration.merge(:root => Rails.root, :source_files => files))
+    @secretary ||= Sprockets::Secretary.new(self.class.configuration.merge(:root => Rails.root))
   end
 
   def self.configuration

@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  resources :sprockets, :only => [:show], :i18n => false
+  resources :sprockets, :only => [:index], :i18n => false
 end
